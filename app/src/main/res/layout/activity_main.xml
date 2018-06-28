@@ -19,11 +19,10 @@
         android:text="获取字符串"
         />
     <Button
-        android:id="@+id/getByte"
+        android:id="@+id/getIntArray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="获取
-"
+        android:text="获取整形数组"
         />
 
 

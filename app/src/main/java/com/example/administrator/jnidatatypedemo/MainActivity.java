@@ -11,6 +11,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final int GET_STRING = 1;
+    private static final int GET_INT_ARRAY = 2;
     private TextView tv;
 
     // Used to load the 'native-lib' library on application startup.
@@ -25,6 +26,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case GET_STRING:
                     String info = (String) msg.obj;
                     tv.setText(info);
+                    handler.removeMessages(GET_STRING);
+                case GET_INT_ARRAY:
+//                    int[] nums = (int[]) msg.obj;
+                    tv.setText("nums is :"+msg.obj);
+                    handler.removeMessages(GET_INT_ARRAY);
             }
             super.handleMessage(msg);
         }
@@ -34,9 +40,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button btn = (Button) findViewById(R.id.getString);
+        Button btn1 = (Button) findViewById(R.id.getString);
+        Button btn2 = (Button) findViewById(R.id.getIntArray);
         tv = (TextView) findViewById(R.id.tv_msg);
-        btn.setOnClickListener(this);
+        btn1.setOnClickListener(this);
+        btn2.setOnClickListener(this);
     }
 
     /**
@@ -44,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * which is packaged with this application.
      */
     public native String stringFromJNI();
+    public native int[] intArrayFromJNI(int[] nums);
 
     @Override
     public void onClick(View view) {
@@ -55,6 +64,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 msg.what = GET_STRING;
                 msg.obj = string;
                 handler.sendMessage(msg);
+                break;
+
+            case R.id.getIntArray:
+                int[] nums = {1,2,3};
+                int[] nums1 = intArrayFromJNI(nums);
+                Message msg1 = new Message();
+                msg1.what = GET_INT_ARRAY;
+                msg1.obj = nums1;
+                handler.sendMessage(msg1);
                 break;
         }
     }
