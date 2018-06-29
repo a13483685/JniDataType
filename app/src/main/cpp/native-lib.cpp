@@ -47,3 +47,101 @@ Java_com_example_administrator_jnidatatypedemo_MainActivity_intArrayFromJNI(JNIE
     return nums_;
 //    env->ReleaseIntArrayElements(nums_,nativeArray,0);
 }
+
+
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_example_administrator_jnidatatypedemo_MainActivity_getInstall(JNIEnv *env, jobject instance) {
+
+    // TODO
+    jclass clazz;
+    jfieldID installFieldId;
+    clazz = env->GetObjectClass(instance);
+    installFieldId = env->GetStaticFieldID(clazz,"instantFieldId","Ljava/lang/String");
+
+
+    return env->NewStringUTF(NULL);
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_example_administrator_jnidatatypedemo_MainActivity_getStatic(JNIEnv *env,
+                                                                      jobject instance,jobject javaClass) {
+    // TODO
+    jclass clazz;
+    jfieldID installFieldId;
+    clazz = env->GetObjectClass(javaClass);
+    installFieldId = env->GetStaticFieldID(clazz,"staticFieldId","Ljava/lang/String;");
+    LOGD("getStatic is %s",installFieldId);
+}
+
+extern "C" JNIEXPORT jobject JNICALL
+Java_com_example_administrator_jnidatatypedemo_MainActivity_accessConstructMethod(JNIEnv *env,
+                                                                                   jobject instance) {
+    jclass jstudent;
+    //获得类
+    jstudent = env->FindClass("com/example/administrator/jnidatatypedemo/Student");
+    //获得类的构造方法的id
+    jmethodID studentCont= env->GetMethodID(jstudent,"<init>","(Ljava/lang/String;I)V");
+    const char * name = "JNI 构造方法，Nic";
+    jstring jname= env->NewStringUTF(name);
+    jint jage = 11;
+    jobject student = env->NewObject(jstudent,studentCont,jname,jage);
+    return student;
+}
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_example_administrator_jnidatatypedemo_MainActivity_getNameAge(JNIEnv *env,
+                                                                       jobject instance,
+                                                                       jobject student) {
+    //1.先拿到对象的类
+    jclass  studentClass = env->GetObjectClass(student);
+    //2.拿到对象方法d的id
+    jmethodID methodID1 = env->GetMethodID(studentClass,"getName","()Ljava/lang/String;");
+    //3.根据id来执行方法
+    jstring jname = (jstring)env->CallObjectMethod(studentClass,methodID1);
+
+    jmethodID methodID2 = env->GetMethodID(studentClass,"getAge","()I");
+
+    jint jage = (jint)env->CallObjectMethod(studentClass,methodID2);
+
+    jmethodID methodID3 = env->GetMethodID(studentClass,"toString","()Ljava/lang/String;");
+
+    jstring toString = (jstring)env->CallObjectMethod(studentClass,methodID3);
+
+    const char *tostr = env->GetStringUTFChars(toString,0);
+    return env->NewStringUTF(tostr);
+}
+
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_com_example_administrator_jnidatatypedemo_MainActivity_setNameAge(JNIEnv *env,
+                                                                       jobject instance,
+                                                                       jobject student) {
+    jclass jclass1 = env->GetObjectClass(student);
+    jmethodID jmethodID1 = env->GetMethodID(jclass1,"setName","(Ljava/lang/String;)V");
+    //設置名字
+    jstring name = env->NewStringUTF("nic");
+    env->CallVoidMethod(jclass1,jmethodID1,name);
+    //設置年齡
+    jmethodID jmethodID2 = env->GetMethodID(jclass1,"setAge","(I)V");
+
+    jint age = 20;
+    env->CallVoidMethod(jclass1,jmethodID2,age);
+
+    jmethodID methodID3 = env->GetMethodID(jclass1,"toString","()Ljava/lang/String;");
+
+    jstring toString = (jstring)env->CallObjectMethod(jclass1,methodID3);
+
+    const char *tostr = env->GetStringUTFChars(toString,0);
+
+    return env->NewStringUTF(tostr);
+}
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_example_administrator_jnidatatypedemo_MainActivity_getStaticInfo(JNIEnv *env,
+                                                                          jobject instance) {
+
+    // TODO
+
+
+    return env->NewStringUTF(NULL);
+}

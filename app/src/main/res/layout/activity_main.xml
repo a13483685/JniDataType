@@ -10,20 +10,45 @@
         android:id="@+id/tv_msg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="123"
-        />
+        android:text="123" />
+
     <Button
         android:id="@+id/getString"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="获取字符串"
-        />
+        android:text="获取字符串" />
+
     <Button
         android:id="@+id/getIntArray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="获取整形数组"
+        android:text="获取整形数组" />
+
+    <Button
+    android:id="@+id/getInstantObj"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="获取实例域"
+    />
+
+    <Button
+        android:id="@+id/getStaticObj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="获取静态域"
         />
 
+    <Button
+        android:id="@+id/getStFromJni"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JNI返回stu对象"
+        />
+    <Button
+        android:id="@+id/getStInFoFromJni"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JNI返回stu对象"
+        />
 
 </LinearLayout>
