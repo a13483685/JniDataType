@@ -16,15 +16,15 @@ Java_com_example_administrator_jnidatatypedemo_MainActivity_stringFromJNI(
         JNIEnv *env,
         jobject /* this */) {
     std::string hello = "Hello from C++";
-    const char * cppString ;
+    const char *cppString;
     jboolean isCopy;
     jstring javastring = env->NewStringUTF(hello.c_str());
-    cppString = env->GetStringUTFChars(javastring,&isCopy);
-    if(cppString!=0){
-        printf("Java String is : %s",cppString);
-        LOGD("Java string is : %s",cppString);
+    cppString = env->GetStringUTFChars(javastring, &isCopy);
+    if (cppString != 0) {
+        printf("Java String is : %s", cppString);
+        LOGD("Java string is : %s", cppString);
     }
-    env->ReleaseStringUTFChars(javastring,cppString);
+    env->ReleaseStringUTFChars(javastring, cppString);
     return javastring;
 }
 extern "C"
@@ -34,14 +34,13 @@ Java_com_example_administrator_jnidatatypedemo_MainActivity_intArrayFromJNI(JNIE
                                                                             jintArray nums_) {
     int nativeArray[3];
 
-    env->GetIntArrayRegion(nums_,0,3,nativeArray);
-    if(nativeArray!=0){
-        for (int i=0;i<3 ;i++)
-        {
-            nativeArray[i] = nativeArray[i]*2;
-            LOGD("jni num are : %d",nativeArray[i]);
+    env->GetIntArrayRegion(nums_, 0, 3, nativeArray);
+    if (nativeArray != 0) {
+        for (int i = 0; i < 3; i++) {
+            nativeArray[i] = nativeArray[i] * 2;
+            LOGD("jni num are : %d", nativeArray[i]);
         }
-        env->SetIntArrayRegion(nums_,0,3,nativeArray);
+        env->SetIntArrayRegion(nums_, 0, 3, nativeArray);
     }
 
     return nums_;
@@ -51,13 +50,14 @@ Java_com_example_administrator_jnidatatypedemo_MainActivity_intArrayFromJNI(JNIE
 
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_administrator_jnidatatypedemo_MainActivity_getInstall(JNIEnv *env, jobject instance) {
+Java_com_example_administrator_jnidatatypedemo_MainActivity_getInstall(JNIEnv *env,
+                                                                       jobject instance) {
 
     // TODO
     jclass clazz;
     jfieldID installFieldId;
     clazz = env->GetObjectClass(instance);
-    installFieldId = env->GetStaticFieldID(clazz,"instantFieldId","Ljava/lang/String");
+    installFieldId = env->GetStaticFieldID(clazz, "instantFieldId", "Ljava/lang/String");
 
 
     return env->NewStringUTF(NULL);
@@ -65,27 +65,28 @@ Java_com_example_administrator_jnidatatypedemo_MainActivity_getInstall(JNIEnv *e
 
 extern "C" JNIEXPORT void JNICALL
 Java_com_example_administrator_jnidatatypedemo_MainActivity_getStatic(JNIEnv *env,
-                                                                      jobject instance,jobject javaClass) {
+                                                                      jobject instance,
+                                                                      jobject javaClass) {
     // TODO
     jclass clazz;
     jfieldID installFieldId;
     clazz = env->GetObjectClass(javaClass);
-    installFieldId = env->GetStaticFieldID(clazz,"staticFieldId","Ljava/lang/String;");
-    LOGD("getStatic is %s",installFieldId);
+    installFieldId = env->GetStaticFieldID(clazz, "staticFieldId", "Ljava/lang/String;");
+    LOGD("getStatic is %s", installFieldId);
 }
 
 extern "C" JNIEXPORT jobject JNICALL
 Java_com_example_administrator_jnidatatypedemo_MainActivity_accessConstructMethod(JNIEnv *env,
-                                                                                   jobject instance) {
+                                                                                  jobject instance) {
     jclass jstudent;
     //获得类
     jstudent = env->FindClass("com/example/administrator/jnidatatypedemo/Student");
     //获得类的构造方法的id
-    jmethodID studentCont= env->GetMethodID(jstudent,"<init>","(Ljava/lang/String;I)V");
-    const char * name = "JNI 构造方法，Nic";
-    jstring jname= env->NewStringUTF(name);
+    jmethodID studentCont = env->GetMethodID(jstudent, "<init>", "(Ljava/lang/String;I)V");
+    const char *name = "JNI 构造方法，Nic";
+    jstring jname = env->NewStringUTF(name);
     jint jage = 11;
-    jobject student = env->NewObject(jstudent,studentCont,jname,jage);
+    jobject student = env->NewObject(jstudent, studentCont, jname, jage);
     return student;
 }
 
@@ -94,21 +95,24 @@ Java_com_example_administrator_jnidatatypedemo_MainActivity_getNameAge(JNIEnv *e
                                                                        jobject instance,
                                                                        jobject student) {
     //1.先拿到对象的类
-    jclass  studentClass = env->GetObjectClass(student);
+    jclass studentClass = env->GetObjectClass(student);
     //2.拿到对象方法d的id
-    jmethodID methodID1 = env->GetMethodID(studentClass,"getName","()Ljava/lang/String;");
+    jmethodID methodID1 = env->GetMethodID(studentClass, "getName", "()Ljava/lang/String;");
     //3.根据id来执行方法
-    jstring jname = (jstring)env->CallObjectMethod(studentClass,methodID1);
+//    jstring jname = (jstring)env->CallObjectMethod(student,methodID1);
 
-    jmethodID methodID2 = env->GetMethodID(studentClass,"getAge","()I");
+//    jmethodID methodID2 = env->GetMethodID(studentClass,"getAge","()I");
 
-    jint jage = (jint)env->CallObjectMethod(studentClass,methodID2);
+//    jmethodID getAge=env->GetMethodID(studentClass,"getAge","()I");
 
-    jmethodID methodID3 = env->GetMethodID(studentClass,"toString","()Ljava/lang/String;");
+//
+//    jint jage = (jint)env->CallObjectMethod(student,methodID2);
 
-    jstring toString = (jstring)env->CallObjectMethod(studentClass,methodID3);
+    jmethodID methodID3 = env->GetMethodID(studentClass, "toString", "()Ljava/lang/String;");
 
-    const char *tostr = env->GetStringUTFChars(toString,0);
+    jstring toString = (jstring) env->CallObjectMethod(student, methodID3);
+
+    const char *tostr = env->GetStringUTFChars(toString, 0);
     return env->NewStringUTF(tostr);
 }
 
@@ -118,21 +122,21 @@ Java_com_example_administrator_jnidatatypedemo_MainActivity_setNameAge(JNIEnv *e
                                                                        jobject instance,
                                                                        jobject student) {
     jclass jclass1 = env->GetObjectClass(student);
-    jmethodID jmethodID1 = env->GetMethodID(jclass1,"setName","(Ljava/lang/String;)V");
+    jmethodID jmethodID1 = env->GetMethodID(jclass1, "setName", "(Ljava/lang/String;)V");
     //設置名字
     jstring name = env->NewStringUTF("nic");
-    env->CallVoidMethod(jclass1,jmethodID1,name);
+    env->CallVoidMethod(student, jmethodID1, name);
     //設置年齡
-    jmethodID jmethodID2 = env->GetMethodID(jclass1,"setAge","(I)V");
+    jmethodID jmethodID2 = env->GetMethodID(jclass1, "setAge", "(I)V");
 
     jint age = 20;
-    env->CallVoidMethod(jclass1,jmethodID2,age);
+    env->CallVoidMethod(student, jmethodID2, age);
 
-    jmethodID methodID3 = env->GetMethodID(jclass1,"toString","()Ljava/lang/String;");
+    jmethodID methodID3 = env->GetMethodID(jclass1, "toString", "()Ljava/lang/String;");
 
-    jstring toString = (jstring)env->CallObjectMethod(jclass1,methodID3);
+    jstring toString = (jstring) env->CallObjectMethod(student, methodID3);
 
-    const char *tostr = env->GetStringUTFChars(toString,0);
+    const char *tostr = env->GetStringUTFChars(toString, 0);
 
     return env->NewStringUTF(tostr);
 }
@@ -140,8 +144,11 @@ extern "C" JNIEXPORT jstring JNICALL
 Java_com_example_administrator_jnidatatypedemo_MainActivity_getStaticInfo(JNIEnv *env,
                                                                           jobject instance) {
 
-    // TODO
-
-
-    return env->NewStringUTF(NULL);
+    jclass jclass = env->FindClass("com/example/administrator/jnidatatypedemo/Student");
+    jmethodID jmethodID = env->GetStaticMethodID(jclass,"getInfo","(Ljava/lang/String;I)Ljava/lang/String;");
+    jstring name = env->NewStringUTF("NICHOLAS");
+    int age =23;
+    jstring msg = (jstring)env->CallStaticObjectMethod(jclass,jmethodID,name,age);
+    const char * info = env->GetStringUTFChars(msg,0);
+    return env->NewStringUTF(info);
 }

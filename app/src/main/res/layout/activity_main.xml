@@ -51,4 +51,18 @@
         android:text="JNI返回stu对象"
         />
 
+    <Button
+        android:id="@+id/setStInFoFromJni"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JNI设置stu属性"
+        />
+    <Button
+        android:id="@+id/call_static_method"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="调用静态方法"
+        />
+
+
 </LinearLayout>
